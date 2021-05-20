@@ -1,16 +1,29 @@
-version: '3.7'
-
+version: '3'
 
 services:
-  mongodb_container:
-    image: mongo:latest
+  postgres-compose:
+    image: postgres
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      POSTGRES_PASSWORD: "via01@2021"
     ports:
-      - 27017:27017
+      - "15432:5432"
     volumes:
-      - mongodb_data_container:/data/db
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
 
-volumes:
-  mongodb_data_container:
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "carlos.moura@via01.com.br"
+      PGADMIN_DEFAULT_PASSWORD: "via01@2021"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres-compose
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge
