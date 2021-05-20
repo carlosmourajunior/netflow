@@ -182,9 +182,9 @@ class Connection:
         return self.src_flow["IN_PKTS"] + self.dest_flow["IN_PKTS"]
 
 
-if __name__ == "netflow.analyzer":
+if __name__ == "netflow_base.analyzer":
     logger.error("The analyzer is currently meant to be used as a CLI tool only.")
-    logger.error("Use 'python3 -m netflow.analyzer -h' in your console for additional help.")
+    logger.error("Use 'python3 -m netflow_base.analyzer -h' in your console for additional help.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Output a basic analysis of NetFlow data")

@@ -29,7 +29,7 @@ ParsedPacket = namedtuple('ParsedPacket', ['ts', 'client', 'export'])
 # Amount of time to wait before dropping an undecodable ExportPacket
 PACKET_TIMEOUT = 60 * 60
 
-logger = logging.getLogger("netflow-collector")
+logger = logging.getLogger("netflow_base-collector")
 ch = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
@@ -115,7 +115,7 @@ class ThreadedNetFlowListener(threading.Thread):
         # Process packets from the queue
         try:
             # TODO: use per-client templates
-            templates = {"netflow": {}, "ipfix": {}}
+            templates = {"netflow_base": {}, "ipfix": {}}
             to_retry = []
             while not self._shutdown.is_set():
                 try:
@@ -192,12 +192,12 @@ def get_export_packets(host: str, port: int) -> ParsedPacket:
         listener.join()
 
 
-if __name__ == "netflow.collector":
+if __name__ == "netflow_base.collector":
     logger.error("The collector is currently meant to be used as a CLI tool only.")
-    logger.error("Use 'python3 -m netflow.collector -h' in your console for additional help.")
+    logger.error("Use 'python3 -m netflow_base.collector -h' in your console for additional help.")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="A sample netflow collector.")
+    parser = argparse.ArgumentParser(description="A sample netflow_base collector.")
     parser.add_argument("--host", type=str, default="0.0.0.0",
                         help="collector listening address")
     parser.add_argument("--port", "-p", type=int, default=2055,

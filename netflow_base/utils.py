@@ -45,9 +45,9 @@ def parse_packet(data: Union[str, bytes], templates: Dict = None) -> Union[V1Exp
     the packet is queued for later re-parsing (this functionality is not handled in this code snippet).
 
     ```
-    collector = netflow.collector
+    collector = netflow_base.collector
     coll = collector.start('0.0.0.0', 2055)
-    templates = {"netflow": [], "ipfix": []}
+    templates = {"netflow_base": [], "ipfix": []}
     packets_with_unrecognized_templates = []
     while coll.receive_export():
         packet = coll.get_received_export_packet()
@@ -63,7 +63,7 @@ def parse_packet(data: Union[str, bytes], templates: Dict = None) -> Union[V1Exp
     :raises UnknownExportVersion: When the exported version is not recognized.
 
     :param data: The export packet as string or bytes.
-    :param templates: The templates dictionary with keys 'netflow' and 'ipfix' (created if not existing).
+    :param templates: The templates dictionary with keys 'netflow_base' and 'ipfix' (created if not existing).
     :return: The parsed packet, or an exception.
     """
     if type(data) == str:
@@ -91,9 +91,9 @@ def parse_packet(data: Union[str, bytes], templates: Dict = None) -> Union[V1Exp
     elif version == 5:
         return V5ExportPacket(data)
     elif version == 9:
-        if "netflow" not in templates:
-            templates["netflow"] = []
-        return V9ExportPacket(data, templates["netflow"])
+        if "netflow_base" not in templates:
+            templates["netflow_base"] = []
+        return V9ExportPacket(data, templates["netflow_base"])
     elif version == 10:
         if "ipfix" not in templates:
             templates["ipfix"] = []
